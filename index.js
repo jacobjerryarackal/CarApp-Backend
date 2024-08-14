@@ -13,6 +13,8 @@ const app = express();
 app.use(cors()); 
 app.use(bodyParser.json()); 
 dotenv.config();
+
+
 try{
   console.log(process.env.MINIO_ENDPOINT);
   console.log(parseInt(process.env.MINIO_PORT));

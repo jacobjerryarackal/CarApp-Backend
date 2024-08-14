@@ -7,14 +7,25 @@ export const vehicleResolvers = {
   Query: {
     vehicles: async () => {
       try {
-        return await prisma.vehicle.findMany();
+        return await prisma.vehicle.findMany({
+          include: {
+            manufacturer: true,
+            model: true,
+          },
+        });
       } catch (error) {
         throw new ApolloError('Failed to fetch vehicles');
       }
     },
     vehicle: async (_, { id }) => {
       try {
-        return await prisma.vehicle.findUnique({ where: { id: parseInt(id) } });
+        return await prisma.vehicle.findUnique({
+          where: { id: parseInt(id) },
+          include: {
+            manufacturer: true,
+            model: true,
+          },
+        });
       } catch (error) {
         throw new ApolloError('Failed to fetch vehicle');
       }
@@ -34,6 +45,10 @@ export const vehicleResolvers = {
             manufacturer: { connect: { id: parseInt(args.manufacturerId) } },
             model: { connect: { id: parseInt(args.modelId) } },
           },
+          include: {
+            manufacturer: true,
+            model: true,
+          },
         });
       } catch (error) {
         throw new ApolloError('Failed to create vehicle');
@@ -44,6 +59,10 @@ export const vehicleResolvers = {
         return await prisma.vehicle.update({
           where: { id: parseInt(id) },
           data: { ...rest },
+          include: {
+            manufacturer: true,
+            model: true,
+          },
         });
       } catch (error) {
         throw new ApolloError('Failed to update vehicle');
@@ -59,3 +78,4 @@ export const vehicleResolvers = {
     },
   },
 };
+

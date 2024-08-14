@@ -28,7 +28,7 @@ try{
   });
   testMinio(minioConfig);
 
-  // console.log(minioConfig);
+  
   console.log(`Server is running on http://localhost:${parseInt(process.env.MINIO_PORT)}`);
 
 }

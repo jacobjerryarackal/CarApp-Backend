@@ -13,8 +13,9 @@ export const modelTypeDefs = gql`
   }
 
   extend type Mutation {
-    createModel(name: String!, manufacturerId: ID!): Model
-    updateModel(id: ID!, name: String): Model
-    deleteModel(id: ID!): Boolean
-  }
+  createModel(name: String!, manufacturerId: ID!): Model
+  updateModel(id: ID!, name: String, manufacturerId: ID): Model
+  deleteModel(id: ID!): Boolean
+}
+
 `;

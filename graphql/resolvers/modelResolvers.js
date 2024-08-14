@@ -23,26 +23,41 @@ export const modelResolvers = {
   Mutation: {
     createModel: async (_, args) => {
       try {
-        return await prisma.model.create({
+        const model = await prisma.model.create({
           data: {
             name: args.name,
             manufacturer: { connect: { id: parseInt(args.manufacturerId) } },
           },
+          include: {
+            manufacturer: true,
+          },
         });
+    
+        return model;
       } catch (error) {
         throw new ApolloError('Failed to create model');
       }
     },
-    updateModel: async (_, { id, ...rest }) => {
+    
+    updateModel: async (_, { id, name, manufacturerId }) => {
       try {
+        const updateData = {};
+    
+        if (name) updateData.name = name;
+        if (manufacturerId) updateData.manufacturer = { connect: { id: parseInt(manufacturerId) } };
+    
         return await prisma.model.update({
           where: { id: parseInt(id) },
-          data: { ...rest },
+          data: updateData,
+          include: {
+            manufacturer: true,
+          },
         });
       } catch (error) {
         throw new ApolloError('Failed to update model');
       }
     },
+    
     deleteModel: async (_, { id }) => {
       try {
         await prisma.model.delete({ where: { id: parseInt(id) } });

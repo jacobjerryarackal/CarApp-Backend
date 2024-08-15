@@ -3,6 +3,9 @@ import { bookingResolvers } from './bookingResolvers.js';
 import { modelResolvers } from './modelResolvers.js';
 import { manufacturerResolvers } from './manufacturerResolvers.js';
 import { adminResolvers } from './adminResolvers.js';
+import { featureResolvers } from './featureResolvers.js';
+import { userResolvers } from './userResolvers.js';
+import { vehicletypeResolvers } from './typevechicleResolvers.js';
 
 export const resolvers = {
   Query: {
@@ -11,6 +14,9 @@ export const resolvers = {
     ...modelResolvers.Query,
     ...manufacturerResolvers.Query,
     ...adminResolvers.Query,
+    ...featureResolvers.Query,
+    ...userResolvers.Query,
+    ...vehicletypeResolvers.Query
   },
   Mutation: {
     ...vehicleResolvers.Mutation,
@@ -18,5 +24,8 @@ export const resolvers = {
     ...modelResolvers.Mutation,
     ...manufacturerResolvers.Mutation,
     ...adminResolvers.Mutation,
+    ...featureResolvers.Mutation,
+    ...userResolvers.Mutation,
+    ...vehicletypeResolvers.Mutation
   },
 };

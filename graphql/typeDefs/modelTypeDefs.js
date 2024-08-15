@@ -17,5 +17,4 @@ export const modelTypeDefs = gql`
   updateModel(id: ID!, name: String, manufacturerId: ID): Model
   deleteModel(id: ID!): Boolean
 }
-
 `;

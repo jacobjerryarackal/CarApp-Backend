@@ -11,6 +11,8 @@ export const vehicleResolvers = {
           include: {
             manufacturer: true,
             model: true,
+            vehicleType: true, 
+            features: true,
           },
         });
       } catch (error) {
@@ -24,6 +26,8 @@ export const vehicleResolvers = {
           include: {
             manufacturer: true,
             model: true,
+            vehicleType: true,
+            features: true,
           },
         });
       } catch (error) {
@@ -44,24 +48,40 @@ export const vehicleResolvers = {
             availableQuantity: args.availableQuantity,
             manufacturer: { connect: { id: parseInt(args.manufacturerId) } },
             model: { connect: { id: parseInt(args.modelId) } },
+            vehicleType: { connect: { id: parseInt(args.vehicleTypeId) } },
+            features: {
+              connect: args.featuresId.map((id) => ({ id: parseInt(id) }))
+            },
           },
           include: {
             manufacturer: true,
             model: true,
+            vehicleType: true, 
+            features: true,
           },
         });
       } catch (error) {
         throw new ApolloError('Failed to create vehicle');
       }
     },
-    updateVehicle: async (_, { id, ...rest }) => {
+    updateVehicle: async (_, { id, featuresId, ...rest }) => {
       try {
         return await prisma.vehicle.update({
           where: { id: parseInt(id) },
-          data: { ...rest },
+          data: {
+            ...rest,
+            vehicleType: rest.vehicleTypeId
+              ? { connect: { id: parseInt(rest.vehicleTypeId) } }
+              : undefined,
+            features: featuresId
+              ? { connect: featuresId.map((id) => ({ id: parseInt(id) })) }
+              : undefined,
+          },
           include: {
             manufacturer: true,
             model: true,
+            vehicleType: true, 
+            features: true,
           },
         });
       } catch (error) {
@@ -78,4 +98,3 @@ export const vehicleResolvers = {
     },
   },
 };
-

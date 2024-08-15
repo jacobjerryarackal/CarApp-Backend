@@ -29,9 +29,36 @@ model Vehicle {
   availableQuantity Int
   manufacturer      Manufacturer @relation(fields: [manufacturerId], references: [id])
   model             Model        @relation(fields: [modelId], references: [id])
+  vehicleType       VehicleType  @relation(fields: [vehicleTypeId], references: [id])
   manufacturerId    Int
   modelId           Int
+  vehicleTypeId     Int
   bookings          Booking[]
+  features          Feature[]    @relation("VehicleFeatures")
+}
+
+model Feature {
+  id             Int         @id @default(autoincrement())
+  engineType     String // e.g., petrol, diesel, electric
+  transmission   String // e.g., automatic, manual
+  horsepower     Int?
+  torque         Int?
+  fuelEfficiency Float? // e.g., km/l or mpg
+  dimensions     String? // e.g., L x W x H
+  weight         Float?
+  safetyFeatures String[] // e.g., airbags, ABS, etc.
+  infotainment   String? // e.g., description of infotainment system
+  vehicleType    VehicleType @relation(fields: [vehicleTypeId], references: [id])
+  vehicleTypeId  Int
+  Vehicle        Vehicle[]   @relation("VehicleFeatures")
+}
+
+model VehicleType {
+  id          Int       @id @default(autoincrement())
+  name        String // e.g., base model, middle model, top-end model
+  description String?
+  features    Feature[]
+  vehicles    Vehicle[]
 }
 
 model Manufacturer {

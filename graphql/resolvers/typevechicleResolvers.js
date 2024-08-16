@@ -39,9 +39,11 @@ export const vehicletypeResolvers = {
           },
         });
       } catch (error) {
+        console.error(error);
         throw new ApolloError('Failed to create vehicle type');
       }
     },
+    
     updateVehicleType: async (_, { id, name, description }) => {
       try {
         return await prisma.vehicleType.update({

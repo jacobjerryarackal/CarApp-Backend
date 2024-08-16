@@ -8,7 +8,7 @@ export const featureResolvers = {
     features: async () => {
       try {
         return await prisma.features.findMany({
-          include: { vehicle: true },
+          include: { vehicleType: true },
         });
       } catch (error) {
         throw new ApolloError('Failed to fetch features');
@@ -18,7 +18,7 @@ export const featureResolvers = {
       try {
         return await prisma.features.findUnique({
           where: { id: parseInt(id) },
-          include: { vehicle: true },
+          include: { vehicleType: true },
         });
       } catch (error) {
         throw new ApolloError('Failed to fetch feature');
@@ -39,11 +39,12 @@ export const featureResolvers = {
             weight: args.weight,
             safetyFeatures: args.safetyFeatures,
             infotainment: args.infotainment,
-            vehicle: { connect: { id: parseInt(args.vehicleId) } },
+            vehicleType: { connect: { id: parseInt(args.vehicleTypeId) } },
           },
-          include: { vehicle: true },
+          include: { vehicleType: true },
         });
       } catch (error) {
+        console.error('Detailed error:', error);
         throw new ApolloError('Failed to create features');
       }
     },
@@ -52,7 +53,7 @@ export const featureResolvers = {
         return await prisma.features.update({
           where: { id: parseInt(id) },
           data: { ...rest },
-          include: { vehicle: true },
+          include: { vehicleType: true },
         });
       } catch (error) {
         throw new ApolloError('Failed to update features');

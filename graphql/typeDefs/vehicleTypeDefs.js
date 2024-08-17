@@ -11,7 +11,7 @@ export const vehicleTypeDefs = gql`
     availableQuantity: Int!
     manufacturer: Manufacturer!
     model: Model!
-    vehicleType: VehicleType!
+    vehicleTypes: [VehicleType!]!
     features: [Feature!]!
   }
 
@@ -49,7 +49,7 @@ export const vehicleTypeDefs = gql`
       availableQuantity: Int!
       manufacturerId: ID!
       modelId: ID!
-      vehicleTypeId: ID!
+      vehicleTypeIds: [ID!]!
       featuresId: [ID!]
     ): Vehicle
 
@@ -63,7 +63,7 @@ export const vehicleTypeDefs = gql`
       availableQuantity: Int
       manufacturerId: ID
       modelId: ID
-      vehicleTypeId: ID
+      vehicleTypeIds: [ID!]!
       featuresId: [ID!]
     ): Vehicle
 

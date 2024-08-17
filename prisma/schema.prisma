@@ -20,20 +20,19 @@ model User {
 }
 
 model Vehicle {
-  id                Int          @id @default(autoincrement())
+  id                Int           @id @default(autoincrement())
   name              String
   description       String
   price             Float
   primaryImage      String?
   otherImages       String[]
   availableQuantity Int
-  manufacturer      Manufacturer @relation(fields: [manufacturerId], references: [id])
-  model             Model        @relation(fields: [modelId], references: [id])
-  vehicleType       VehicleType  @relation(fields: [vehicleTypeId], references: [id])
+  manufacturer      Manufacturer  @relation(fields: [manufacturerId], references: [id])
+  model             Model         @relation(fields: [modelId], references: [id])
+  vehicleTypes      VehicleType[] @relation("VehicleTypes")
   manufacturerId    Int
   modelId           Int
-  vehicleTypeId     Int
-  features          Features[]   @relation("VehicleFeatures")
+  features          Features[]    @relation("VehicleFeatures")
   bookings          Booking[]
 }
 
@@ -58,7 +57,7 @@ model VehicleType {
   name        String
   description String?
   features    Features[]
-  vehicles    Vehicle[]
+  vehicles    Vehicle[]  @relation("VehicleTypes")
 }
 
 model Manufacturer {

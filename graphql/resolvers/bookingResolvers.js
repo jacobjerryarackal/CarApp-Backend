@@ -7,29 +7,34 @@ export const bookingResolvers = {
   Query: {
     bookings: async () => {
       try {
-        return await prisma.booking.findMany();
+        return await prisma.booking.findMany({
+          include: { vehicle: true, user: true }
+        });
       } catch (error) {
         throw new ApolloError('Failed to fetch bookings');
       }
     },
     booking: async (_, { id }) => {
       try {
-        return await prisma.booking.findUnique({ where: { id: parseInt(id) } });
+        return await prisma.booking.findUnique({
+          where: { id: parseInt(id) },
+          include: { vehicle: true, user: true }
+        });
       } catch (error) {
         throw new ApolloError('Failed to fetch booking');
       }
     },
   },
   Mutation: {
-    createBooking: async (_, args) => {
+    createBooking: async (_, { vehicleId, userId, userName, bookingDate, totalPrice }) => {
       try {
         return await prisma.booking.create({
           data: {
-            vehicle: { connect: { id: parseInt(args.vehicleId) } },
-            customerName: args.customerName,
-            bookingDate: args.bookingDate,
-            seats: args.seats,
-            totalPrice: args.totalPrice,
+            vehicle: { connect: { id: parseInt(vehicleId) } },
+            user: { connect: { id: parseInt(userId) } },
+            userName,
+            bookingDate,
+            totalPrice,
           },
         });
       } catch (error) {

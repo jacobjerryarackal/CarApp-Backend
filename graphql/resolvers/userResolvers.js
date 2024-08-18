@@ -1,8 +1,3 @@
-import { ApolloError } from 'apollo-server-express';
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
-
 export const userResolvers = {
   Query: {
     users: async () => {
@@ -23,20 +18,20 @@ export const userResolvers = {
     }
   },
   Mutation: {
-    createUser: async (_, { email, password }) => {
+    createUser: async (_, { name, email, phone, city, state, country, pincode, password }) => {
       try {
         return await prisma.user.create({
-          data: { email, password },
+          data: { name, email, phone, city, state, country, pincode, password },
         });
       } catch (error) {
         throw new ApolloError('Failed to create user');
       }
     },
-    updateUser: async (_, { id, email, password }) => {
+    updateUser: async (_, { id, name, email, phone, city, state, country, pincode, password }) => {
       try {
         return await prisma.user.update({
           where: { id: parseInt(id) },
-          data: { email, password },
+          data: { name, email, phone, city, state, country, pincode, password },
         });
       } catch (error) {
         throw new ApolloError('Failed to update user');
@@ -52,4 +47,3 @@ export const userResolvers = {
     },
   },
 };
-

@@ -4,9 +4,9 @@ export const bookingTypeDefs = gql`
   type Booking {
     id: ID!
     vehicle: Vehicle!
-    customerName: String!
+    user: User!
+    userName: String!
     bookingDate: String!
-    seats: Int!
     totalPrice: Float!
   }
 
@@ -17,10 +17,10 @@ export const bookingTypeDefs = gql`
 
   extend type Mutation {
     createBooking(
-      vehicleId: ID!
-      customerName: String!
-      bookingDate: String!
-      seats: Int!
+      vehicleId: ID!,
+      userId: ID!,
+      userName: String!,
+      bookingDate: String!,
       totalPrice: Float!
     ): Booking
     deleteBooking(id: ID!): Boolean

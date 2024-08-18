@@ -9,14 +9,25 @@ datasource db {
 
 model Admin {
   id       Int    @id @default(autoincrement())
+  name     String
   email    String @unique
   password String
 }
 
 model User {
-  id       Int    @id @default(autoincrement())
-  email    String @unique
-  password String
+  id        Int       @id @default(autoincrement())
+  name      String
+  email     String    @unique
+  phone     String    @unique
+  city      String
+  state     String
+  country   String
+  pincode   String
+  password  String
+  verified  Boolean   @default(false)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  Booking   Booking[]
 }
 
 model Vehicle {
@@ -76,11 +87,12 @@ model Model {
 }
 
 model Booking {
-  id           Int     @id @default(autoincrement())
-  vehicle      Vehicle @relation(fields: [vehicleId], references: [id])
-  vehicleId    Int
-  customerName String
-  bookingDate  String
-  seats        Int
-  totalPrice   Float
+  id          Int      @id @default(autoincrement())
+  vehicle     Vehicle  @relation(fields: [vehicleId], references: [id])
+  vehicleId   Int
+  user        User     @relation(fields: [userId], references: [id])
+  userId      Int
+  userName    String
+  bookingDate DateTime @default(now())
+  totalPrice  Float
 }

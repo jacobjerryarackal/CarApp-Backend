@@ -3,8 +3,18 @@ import { gql } from 'apollo-server-express';
 export const userTypeDefs = gql`
   type User {
     id: ID!
+    name: String!
     email: String!
+    phone: String!
+    city: String!
+    state: String!
+    country: String!
+    pincode: String!
     password: String!
+    verified: Boolean!
+    createdAt: String!
+    updatedAt: String!
+    bookings: [Booking]
   }
 
   extend type Query {
@@ -15,8 +25,27 @@ export const userTypeDefs = gql`
   }
 
   extend type Mutation {
-    createUser(email: String!, password: String!): User
-    updateUser(id: ID!, email: String, password: String): User
+    createUser(
+      name: String!,
+      email: String!,
+      phone: String!,
+      city: String!,
+      state: String!,
+      country: String!,
+      pincode: String!,
+      password: String!
+    ): User
+    updateUser(
+      id: ID!,
+      name: String,
+      email: String,
+      phone: String,
+      city: String,
+      state: String,
+      country: String,
+      pincode: String,
+      password: String
+    ): User
     deleteUser(id: ID!): Boolean
   }
 `;

@@ -6,6 +6,7 @@ import { resolvers } from './graphql/resolvers/index.js';
 import { typeDefs } from './graphql/typeDefs/index.js';
 import pkg from 'pg';
 import dotenv from "dotenv"
+import jwt from "jsonwebtoken"
 import { Client } from "minio";
 
 const { Pool } = pkg;

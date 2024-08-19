@@ -11,6 +11,8 @@ export const vehicleTypeDefs = gql`
     availableQuantity: Int!
     manufacturer: Manufacturer!
     model: Model!
+
+    
     vehicleTypes: [VehicleType!]!
     features: [Feature!]!
   }

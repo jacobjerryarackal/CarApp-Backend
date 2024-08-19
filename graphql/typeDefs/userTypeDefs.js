@@ -17,6 +17,11 @@ export const userTypeDefs = gql`
     bookings: [Booking]
   }
 
+  type AuthPayload {
+    token: String!
+    user: User
+  }
+
   extend type Query {
     users: [User]
     user(id: ID!): User
@@ -47,5 +52,6 @@ export const userTypeDefs = gql`
       password: String
     ): User
     deleteUser(id: ID!): Boolean
+    loginUser(email: String!, password: String!): AuthPayload
   }
 `;

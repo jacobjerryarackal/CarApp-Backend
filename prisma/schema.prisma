@@ -27,24 +27,33 @@ model User {
   verified  Boolean   @default(false)
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
-  Booking   Booking[]
+  bookings  Booking[]
 }
 
 model Vehicle {
-  id                Int           @id @default(autoincrement())
+  id                Int            @id @default(autoincrement())
   name              String
   description       String
-  price             Float[]
   primaryImage      String?
-  otherImages       String[]
+  otherImages       String[]       @default([])
   availableQuantity Int
-  manufacturer      Manufacturer  @relation(fields: [manufacturerId], references: [id])
-  model             Model         @relation(fields: [modelId], references: [id])
-  vehicleTypes      VehicleType[] @relation("VehicleTypes")
+  manufacturer      Manufacturer   @relation(fields: [manufacturerId], references: [id])
+  model             Model          @relation(fields: [modelId], references: [id])
+  vehicleTypes      VehicleType[]  @relation("VehicleTypes")
   manufacturerId    Int
   modelId           Int
-  features          Features[]    @relation("VehicleFeatures")
   bookings          Booking[]
+  Features          Features[]     @relation("FeaturesOnVehicles")
+  vehiclePrices     VehiclePrice[] @relation("VehiclePrices")
+}
+
+model VehiclePrice {
+  id            Int         @id @default(autoincrement())
+  price         Float
+  vehicleType   VehicleType @relation("VehicleTypePrices", fields: [vehicleTypeId], references: [id])
+  vehicleTypeId Int
+  vehicle       Vehicle     @relation("VehiclePrices", fields: [vehicleId], references: [id])
+  vehicleId     Int
 }
 
 model Features {
@@ -58,17 +67,18 @@ model Features {
   weight         Float?
   safetyFeatures String[]
   infotainment   String?
-  vehicleType    VehicleType @relation(fields: [vehicleTypeId], references: [id])
+  vehicleType    VehicleType @relation("VehicleTypeFeatures", fields: [vehicleTypeId], references: [id])
   vehicleTypeId  Int
-  vehicles       Vehicle[]   @relation("VehicleFeatures")
+  vehicles       Vehicle[]   @relation("FeaturesOnVehicles")
 }
 
 model VehicleType {
-  id          Int        @id @default(autoincrement())
-  name        String
-  description String?
-  features    Features[]
-  vehicles    Vehicle[]  @relation("VehicleTypes")
+  id            Int            @id @default(autoincrement())
+  name          String
+  description   String?
+  features      Features[]     @relation("VehicleTypeFeatures")
+  vehiclePrices VehiclePrice[] @relation("VehicleTypePrices")
+  vehicles      Vehicle[]      @relation("VehicleTypes")
 }
 
 model Manufacturer {

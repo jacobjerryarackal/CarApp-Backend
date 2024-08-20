@@ -7,6 +7,7 @@ import { adminTypeDefs } from './adminTypeDefs.js';
 import { userTypeDefs } from './userTypeDefs.js';
 import { featuresTypeDefs } from './featureTypeDefs.js';
 import { typevechicleDefs } from './typevechicleTypeDefs.js';
+import { priceVehicleTypeDefs } from './pricevehicleTypeDefs.js';
 
 export const typeDefs = gql`
 type Query {
@@ -24,4 +25,5 @@ type Query {
   ${userTypeDefs}
   ${featuresTypeDefs}
   ${typevechicleDefs}
+  ${priceVehicleTypeDefs}
 `;

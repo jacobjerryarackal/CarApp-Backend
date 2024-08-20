@@ -11,8 +11,8 @@ export const vehicleResolvers = {
           include: {
             manufacturer: true,
             model: true,
-            vehicleTypes: true, 
-            features: true,
+            vehicleTypes: true,
+            Features: true
           },
         });
       } catch (error) {
@@ -27,7 +27,7 @@ export const vehicleResolvers = {
             manufacturer: true,
             model: true,
             vehicleTypes: true,
-            features: true,
+            Features: true
           },
         });
       } catch (error) {
@@ -38,11 +38,12 @@ export const vehicleResolvers = {
   Mutation: {
     createVehicle: async (_, args) => {
       try {
+        console.log('Creating vehicle with features:', args.featuresId);
+        
         const vehicle = await prisma.vehicle.create({
           data: {
             name: args.name,
             description: args.description,
-            price: args.price,
             primaryImage: args.primaryImage,
             otherImages: args.otherImages,
             availableQuantity: args.availableQuantity,
@@ -51,49 +52,64 @@ export const vehicleResolvers = {
             vehicleTypes: {
               connect: args.vehicleTypeIds.map(id => ({ id: parseInt(id) }))
             },
-            features: {
-              connect: args.featuresId ? args.featuresId.map(id => ({ id: parseInt(id) })) : []
-            },
+            Features: {
+              connect: args.featuresId.length > 0
+                ? args.featuresId.map(id => ({ id: parseInt(id) }))
+                : []
+            }
           },
           include: {
             manufacturer: true,
             model: true,
             vehicleTypes: true,
-            features: true,
+            Features: true
           },
         });
+
+        console.log('Created vehicle:', vehicle);
         return vehicle;
       } catch (error) {
         console.log(error);
         throw new ApolloError('Failed to create vehicle');
       }
-    },
-     
-    
-    updateVehicle: async (_, { id, featuresId, ...rest }) => {
+    },      
+
+    updateVehicle: async (_, { id, vehicleTypeIds, featuresId, ...rest }) => {
       try {
         return await prisma.vehicle.update({
           where: { id: parseInt(id) },
           data: {
             ...rest,
-            vehicleType: rest.vehicleTypeId
-              ? { connect: { id: parseInt(rest.vehicleTypeId) } }
+            vehicleTypes: vehicleTypeIds
+              ? {
+                  connect: vehicleTypeIds.map(id => ({ id: parseInt(id) })),
+                  disconnect: rest.previousVehicleTypeIds
+                    ? rest.previousVehicleTypeIds.map(id => ({ id: parseInt(id) }))
+                    : [],
+                }
               : undefined,
-            features: featuresId
-              ? { connect: featuresId.map((id) => ({ id: parseInt(id) })) }
+            Features: featuresId
+              ? {
+                  connect: featuresId.map(id => ({ id: parseInt(id) })),
+                  disconnect: rest.previousFeaturesId
+                    ? rest.previousFeaturesId.map(id => ({ id: parseInt(id) }))
+                    : [],
+                }
               : undefined,
           },
           include: {
             manufacturer: true,
             model: true,
-            vehicleType: true, 
-            features: true,
+            vehicleTypes: true,
+            Features: true
           },
         });
       } catch (error) {
+        console.log(error);
         throw new ApolloError('Failed to update vehicle');
       }
     },
+
     deleteVehicle: async (_, { id }) => {
       try {
         await prisma.vehicle.delete({ where: { id: parseInt(id) } });

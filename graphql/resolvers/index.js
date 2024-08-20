@@ -6,6 +6,7 @@ import { adminResolvers } from './adminResolvers.js';
 import { featureResolvers } from './featureResolvers.js';
 import { userResolvers } from './userResolvers.js';
 import { vehicletypeResolvers } from './typevechicleResolvers.js';
+import { priceVehicleResolvers } from './pricevehicleResolvers.js';
 
 export const resolvers = {
   Query: {
@@ -16,7 +17,8 @@ export const resolvers = {
     ...adminResolvers.Query,
     ...featureResolvers.Query,
     ...userResolvers.Query,
-    ...vehicletypeResolvers.Query
+    ...vehicletypeResolvers.Query,
+    ...priceVehicleResolvers.Query
   },
   Mutation: {
     ...vehicleResolvers.Mutation,
@@ -26,6 +28,7 @@ export const resolvers = {
     ...adminResolvers.Mutation,
     ...featureResolvers.Mutation,
     ...userResolvers.Mutation,
-    ...vehicletypeResolvers.Mutation
+    ...vehicletypeResolvers.Mutation,
+    ...priceVehicleResolvers.Mutation
   },
 };

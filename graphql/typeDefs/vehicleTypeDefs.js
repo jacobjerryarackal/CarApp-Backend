@@ -2,26 +2,19 @@ import { gql } from 'apollo-server-express';
 
 export const vehicleTypeDefs = gql`
   type Vehicle {
-    id: ID!
-    name: String!
-    description: String!
-    price: Float!
-    primaryImage: String
-    otherImages: [String]
-    availableQuantity: Int!
-    manufacturer: Manufacturer!
-    model: Model!
+  id: ID!
+  name: String!
+  description: String!
+  primaryImage: String
+  otherImages: [String]
+  availableQuantity: Int!
+  manufacturer: Manufacturer!
+  model: Model!
+  vehicleTypes: [VehicleType!]!
+  features: [Feature!]! 
+}
 
-    
-    vehicleTypes: [VehicleType!]!
-    features: [Feature!]!
-  }
 
-  type VehicleType {
-    id: ID!
-    name: String!
-    description: String
-  }
 
   type Feature {
     id: ID!
@@ -34,6 +27,22 @@ export const vehicleTypeDefs = gql`
     weight: Float
     safetyFeatures: [String]
     infotainment: String
+    vehicleType: VehicleType!  
+  }
+
+  type VehicleType {
+    id: ID!
+    name: String!
+    description: String
+    features: [Feature!]!
+    vehicles: [Vehicle!]!
+  }
+
+  type VehiclePrice {
+    id: ID!
+    price: Float!
+    vehicleType: VehicleType!
+    vehicle: Vehicle!
   }
 
   extend type Query {
@@ -45,27 +54,25 @@ export const vehicleTypeDefs = gql`
     createVehicle(
       name: String!
       description: String!
-      price: Float!
       primaryImage: String
       otherImages: [String]
       availableQuantity: Int!
       manufacturerId: ID!
       modelId: ID!
       vehicleTypeIds: [ID!]!
-      featuresId: [ID!]
+      featuresId: [ID!]!
     ): Vehicle
 
     updateVehicle(
       id: ID!
       name: String
       description: String
-      price: Float
       primaryImage: String
       otherImages: [String]
       availableQuantity: Int
       manufacturerId: ID
       modelId: ID
-      vehicleTypeIds: [ID!]!
+      vehicleTypeIds: [ID!]
       featuresId: [ID!]
     ): Vehicle
 

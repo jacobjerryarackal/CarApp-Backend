@@ -12,10 +12,16 @@ export const vehicleResolvers = {
             manufacturer: true,
             model: true,
             vehicleTypes: true,
-            Features: true
+            features: true,
+            vehiclePrices: {
+              include: {
+                vehicleType: true,  // Ensure this is included
+              }
+            }
           },
         });
       } catch (error) {
+        console.log(error);
         throw new ApolloError('Failed to fetch vehicles');
       }
     },
@@ -27,7 +33,12 @@ export const vehicleResolvers = {
             manufacturer: true,
             model: true,
             vehicleTypes: true,
-            Features: true
+            features: true,
+            vehiclePrices: {
+              include: {
+                vehicleType: true,  // Ensure this is included
+              }
+            }
           },
         });
       } catch (error) {
@@ -38,8 +49,6 @@ export const vehicleResolvers = {
   Mutation: {
     createVehicle: async (_, args) => {
       try {
-        console.log('Creating vehicle with features:', args.featuresId);
-        
         const vehicle = await prisma.vehicle.create({
           data: {
             name: args.name,
@@ -52,21 +61,31 @@ export const vehicleResolvers = {
             vehicleTypes: {
               connect: args.vehicleTypeIds.map(id => ({ id: parseInt(id) }))
             },
-            Features: {
+            features: {
               connect: args.featuresId.length > 0
                 ? args.featuresId.map(id => ({ id: parseInt(id) }))
                 : []
-            }
+            },
+            vehiclePrices: {
+              create: args.vehiclePrices.map(price => ({
+                price: price.price,
+                vehicleType: { connect: { id: parseInt(price.vehicleTypeId) } },
+              })),
+            },
           },
           include: {
             manufacturer: true,
             model: true,
             vehicleTypes: true,
-            Features: true
+            features: true,
+            vehiclePrices: {
+              include: {
+                vehicleType: true,  // Ensure this is included
+              }
+            }
           },
         });
 
-        console.log('Created vehicle:', vehicle);
         return vehicle;
       } catch (error) {
         console.log(error);
@@ -74,7 +93,7 @@ export const vehicleResolvers = {
       }
     },      
 
-    updateVehicle: async (_, { id, vehicleTypeIds, featuresId, ...rest }) => {
+    updateVehicle: async (_, { id, vehicleTypeIds, featuresId, vehiclePrices, ...rest }) => {
       try {
         return await prisma.vehicle.update({
           where: { id: parseInt(id) },
@@ -88,7 +107,7 @@ export const vehicleResolvers = {
                     : [],
                 }
               : undefined,
-            Features: featuresId
+            features: featuresId
               ? {
                   connect: featuresId.map(id => ({ id: parseInt(id) })),
                   disconnect: rest.previousFeaturesId
@@ -96,12 +115,28 @@ export const vehicleResolvers = {
                     : [],
                 }
               : undefined,
+            vehiclePrices: vehiclePrices
+              ? {
+                  update: vehiclePrices.map(price => ({
+                    where: { id: price.id },
+                    data: {
+                      price: price.price,
+                      vehicleType: { connect: { id: parseInt(price.vehicleTypeId) } }
+                    },
+                  })),
+                }
+              : undefined,
           },
           include: {
             manufacturer: true,
             model: true,
             vehicleTypes: true,
-            Features: true
+            features: true,
+            vehiclePrices: {
+              include: {
+                vehicleType: true,  // Ensure this is included
+              }
+            }
           },
         });
       } catch (error) {
@@ -120,3 +155,5 @@ export const vehicleResolvers = {
     },
   },
 };
+
+

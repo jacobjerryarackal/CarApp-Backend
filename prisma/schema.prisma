@@ -43,8 +43,8 @@ model Vehicle {
   manufacturerId    Int
   modelId           Int
   bookings          Booking[]
-  Features          Features[]     @relation("FeaturesOnVehicles")
-  vehiclePrices     VehiclePrice[] @relation("VehiclePrices")
+  features          Features[]     @relation("FeaturesOnVehicles")
+  vehiclePrices     VehiclePrice[] @relation("Vehicle")
 }
 
 model VehiclePrice {
@@ -52,7 +52,7 @@ model VehiclePrice {
   price         Float
   vehicleType   VehicleType @relation("VehicleTypePrices", fields: [vehicleTypeId], references: [id])
   vehicleTypeId Int
-  vehicle       Vehicle     @relation("VehiclePrices", fields: [vehicleId], references: [id])
+  vehicle       Vehicle     @relation("Vehicle", fields: [vehicleId], references: [id])
   vehicleId     Int
 }
 

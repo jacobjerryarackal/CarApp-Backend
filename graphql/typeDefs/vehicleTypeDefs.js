@@ -12,6 +12,7 @@ export const vehicleTypeDefs = gql`
   model: Model!
   vehicleTypes: [VehicleType!]!
   features: [Feature!]! 
+  vehiclePrices: [VehiclePrice]
 }
 
 

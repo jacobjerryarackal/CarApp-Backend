@@ -80,7 +80,7 @@ export const vehicleResolvers = {
             features: true,
             vehiclePrices: {
               include: {
-                vehicleType: true,  // Ensure this is included
+                vehicleType: true,  
               }
             }
           },

@@ -33,7 +33,11 @@ export const vehicleResolvers = {
             manufacturer: true,
             model: true,
             vehicleTypes: true,
-            features: true,
+            features: {
+              include: {
+                vehicleType: true,
+              }
+            },
             vehiclePrices: {
               include: {
                 vehicleType: true,

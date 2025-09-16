@@ -1,7 +1,10 @@
+<<<<<<< HEAD
 
 
 
 
+=======
+>>>>>>> 1e5424ed2ecd357c946ab424bd4c03da9baf4006
 # Dockerfile
 FROM node:20
 
@@ -16,4 +19,8 @@ COPY . .
 RUN npx prisma generate
 
 EXPOSE 7000
+<<<<<<< HEAD
 CMD ["npm", "start"]
+=======
+CMD ["npm", "start"]
+>>>>>>> 1e5424ed2ecd357c946ab424bd4c03da9baf4006

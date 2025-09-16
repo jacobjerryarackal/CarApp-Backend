@@ -16,11 +16,19 @@ services:
       - DATABASE_URL=${DATABASE_URL}
 
   apollo-server:
+<<<<<<< HEAD
     image: node:22-alpine # Use Node.js 22 for Apollo Server
     working_dir: /app
     volumes:
       - .:/app # Mount local directory into the container
     command: yarn start # Adjust based on your Apollo Server start script
+=======
+    image: node:20-alpine # Use Node.js 20 for Apollo Server
+    working_dir: /app
+    volumes:
+      - .:/app # Mount local directory into the container
+    command: npm start # Adjust based on your Apollo Server start script
+>>>>>>> 1e5424ed2ecd357c946ab424bd4c03da9baf4006
     ports:
       - "4000:${PORT}" # Expose Apollo Server on port 4000
     depends_on:
@@ -66,8 +74,13 @@ services:
     hostname: minio
     image: minio/minio:latest
     environment:
+<<<<<<< HEAD
       MINIO_ROOT_USER: "${MINIO_ACCESS_KEY}"
       MINIO_ROOT_PASSWORD: "${MINIO_SECRET_KEY}"
+=======
+      MINIO_ROOT_USER: "${MINIO_ROOT_USER}"
+      MINIO_ROOT_PASSWORD: "${MINIO_ROOT_PASSWORD}"
+>>>>>>> 1e5424ed2ecd357c946ab424bd4c03da9baf4006
       MINIO_STORAGE_USE_HTTPS: "${MINIO_STORAGE_USE_HTTPS}"
     command: server --console-address ":9001" /data
     expose:
